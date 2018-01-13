@@ -31,10 +31,12 @@ async function run () {
       ctx.body = {
         destination_account: listener.destinationAccount,
         shared_secret: listener.sharedSecret,
+        minimum_destination_amount: '0',
+        maximum_destination_amount: '10000000000',
         // TODO: dynamically load ledger info
         ledger_info: {
           currency_code: 'XRP',
-          currency_scale: '6'
+          currency_scale: 6
         },
         receiver_info: {
           name: 'Ben Sharafian'

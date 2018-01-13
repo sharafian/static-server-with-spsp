@@ -1,0 +1,19 @@
+{
+  "name": "@sharafian/static-server-with-spsp",
+  "version": "0.0.1",
+  "description": "Static webserver with SPSP on root",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ilp": "https://github.com/interledgerjs/ilp.git#refactor/st-lpi2",
+    "ilp-plugin-btp": "^1.1.4",
+    "koa": "^2.4.1",
+    "koa-router": "^7.3.0",
+    "koa-static": "^4.0.2",
+    "lodash": "^4.17.4"
+  }
+}

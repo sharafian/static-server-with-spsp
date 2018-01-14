@@ -8,6 +8,10 @@ this tool. It points a koa server at your static web root, and runs an SPSP
 receiver that responds to any queries to `/` that have `Accept:
 application/x-spsp-response` set.
 
+**Note:** Because SPSP requires HTTPS, this server needs to be put behind another
+service like nginx or Cloudflare in order to be safely useable. SPSP clients will
+not allow connection to a non-HTTPS receiver.
+
 ```sh
 npm install
 npm install -g pm2

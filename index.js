@@ -3,7 +3,7 @@ const Koa = require('koa')
 
 const crypto = require('crypto')
 const PluginBtp = require('ilp-plugin-btp')
-const ILP = require('ilp') // TODO: PSK2
+const { createReceiver } = require('ilp-protocol-psk2')
 
 const app = new Koa()
 const files = Static(process.env.SERVE_DIR || '/var/www/html')
@@ -18,26 +18,29 @@ async function run () {
   console.log('connecting')
   await plugin.connect()
 
-  const receiverSecret = crypto.randomBytes(32)
-  const listener = await ILP.PSK.listen(plugin, { receiverSecret }, (params) => {
-    console.log('fulfilling. transfer=', JSON.stringify(params.transfer))
-    return params.fulfill()
+  const receiver = await createReceiver({
+    plugin,
+    paymentHandler: async (params) => {
+      console.log('fulfilling. expectedValue=', params.expectedValue,
+        'prepare=', params.prepare)
+      return params.fulfill()
+    }
   })
 
-  console.log('listener', listener)
+  console.log('created receiver')
 
   async function handleSPSP (ctx, next) {
     if (ctx.get('Accept').indexOf('application/spsp+json') !== -1) {
+      const details = receiver.generateAddressAndSecret()
       ctx.set('Content-Type', 'application/spsp+json')
       ctx.body = {
-        destination_account: listener.destinationAccount,
-        shared_secret: listener.sharedSecret,
-        minimum_destination_amount: '0',
-        maximum_destination_amount: '10000000000',
+        destination_account: details.destinationAccount,
+        shared_secret: details.sharedSecret,
+        // no `balance` object because this isn't an invoice
         // TODO: dynamically load ledger info
         ledger_info: {
-          currency_code: 'XRP',
-          currency_scale: 6
+          asset_code: 'XRP',
+          asset_scale: 6
         },
         receiver_info: {
           name: 'Ben Sharafian'

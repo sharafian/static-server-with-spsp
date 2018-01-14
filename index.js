@@ -21,9 +21,9 @@ async function run () {
   const receiver = await createReceiver({
     plugin,
     paymentHandler: async (params) => {
-      console.log('fulfilling. expectedValue=', params.expectedValue,
+      console.log('fulfilling. expectedValue=', params.expectedAmount,
         'prepare=', params.prepare)
-      return params.fulfill()
+      return params.accept()
     }
   })
 
@@ -35,7 +35,7 @@ async function run () {
       ctx.set('Content-Type', 'application/spsp+json')
       ctx.body = {
         destination_account: details.destinationAccount,
-        shared_secret: details.sharedSecret,
+        shared_secret: details.sharedSecret.toString('base64'),
         // no `balance` object because this isn't an invoice
         // TODO: dynamically load ledger info
         ledger_info: {

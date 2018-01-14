@@ -27,7 +27,8 @@ async function run () {
   console.log('listener', listener)
 
   async function handleSPSP (ctx, next) {
-    if (ctx.get('Accept').indexOf('application/x-spsp-response') !== -1) {
+    if (ctx.get('Accept').indexOf('application/spsp+json') !== -1) {
+      ctx.set('Content-Type', 'application/spsp+json')
       ctx.body = {
         destination_account: listener.destinationAccount,
         shared_secret: listener.sharedSecret,

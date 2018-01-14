@@ -1,8 +1,7 @@
 # Static Server with SPSP
 
 After running this on my site, `sharafian.com`, you can now pay me through SPSP
-at `$sharafian.com`. (With this [ILP
-PR](https://github.com/interledgerjs/ilp/pull/126)).
+at `$sharafian.com`. (With [this module](https://github.com/sharafian/ilp-protocol-spsp)).
 
 I wanted to run an SPSP receiver on the root of my personal server, so I made
 this tool. It points a koa server at your static web root, and runs an SPSP
